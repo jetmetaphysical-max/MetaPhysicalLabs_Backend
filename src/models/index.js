@@ -22,12 +22,12 @@ export {
     // Manual,
     // Asset3D,
     // QRCode,
-    // Product,
-    // Order,
-    // Customer,
+    Product,
+    Order,
+    Customer,
     // Integration,
     // BrandAsset,
-    // RevenueEvent,
+    RevenueEvent,
     // ManualView,
     // ProductClick
 };
