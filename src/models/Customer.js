@@ -16,7 +16,7 @@ const CustomerSchema = new mongoose.Schema(
         },
         channel: {
             type: String,
-            enum: ['qr_scan', 'direct', 'shopify', 'woocommerce', 'email'],
+            enum: ['qr_scan', 'direct', 'shopify', 'woocommerce', 'email', 'google', 'social'],
             default: 'qr_scan',
         },
         firstManualId: { type: mongoose.Schema.Types.ObjectId, ref: 'Manual' },

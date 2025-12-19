@@ -6,13 +6,17 @@ export const listOrders = async (tenantId, options = {}) => {
     const skip = (page - 1) * limit;
 
     return Order.find({ organizationId: tenantId })
+        .populate('customerId', 'name email phone')
         .sort({ orderDate: -1 })
         .skip(skip)
         .limit(limit);
 };
 
 export const getOrderById = async (tenantId, orderId) => {
-    const order = await Order.findOne({ _id: orderId, organizationId: tenantId });
+    const order = await Order.findOne({ _id: orderId, organizationId: tenantId })
+        .populate('customerId', 'name email phone address')
+        .populate('items.productId', 'name sku images');
+
     if (!order) throw new ApiError(404, 'Order not found');
     return order;
 };
@@ -22,7 +26,8 @@ export const updateOrder = async (tenantId, orderId, data) => {
         { _id: orderId, organizationId: tenantId },
         data,
         { new: true }
-    );
+    ).populate('customerId', 'name email');
+
     if (!order) throw new ApiError(404, 'Order not found');
     return order;
 };

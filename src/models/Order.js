@@ -51,7 +51,7 @@ const OrderSchema = new mongoose.Schema(
         offerId: { type: mongoose.Schema.Types.ObjectId, ref: 'Offer' },
         status: {
             type: String,
-            enum: ['pending', 'processing', 'completed', 'cancelled', 'refunded'],
+            enum: ['pending', 'processing', 'shipped', 'delivered', 'completed', 'cancelled', 'refunded'],
             default: 'pending',
         },
         fulfillment: {

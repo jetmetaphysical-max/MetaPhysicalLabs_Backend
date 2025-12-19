@@ -39,6 +39,12 @@ const ProductSchema = new mongoose.Schema(
         isActive: { type: Boolean, default: true },
         lastSyncedAt: Date,
         syncError: String,
+        manualStatus: {
+            type: String,
+            enum: ['pending', 'in_progress', 'completed'],
+            default: 'pending'
+        },
+        assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     },
     { timestamps: true }
 );
