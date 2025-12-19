@@ -16,34 +16,22 @@ const ProductSchema = new mongoose.Schema(
         currency: { type: String, default: 'USD' },
         sku: String,
         barcode: String,
-        images: [
-            {
-                url: String,
-                alt: String,
-                position: Number,
-            },
-        ],
-        inventory: {
-            quantity: { type: Number, default: 0 },
-            status: {
-                type: String,
-                enum: ['in_stock', 'low', 'out'],
-                default: 'in_stock',
-            },
-            trackInventory: { type: Boolean, default: true },
-            lowStockThreshold: { type: Number, default: 10 },
+        images: [String], // Aligned with spec: ["string"]
+        inventory: { type: Number, default: 0 }, // Aligned with spec: number
+        inventoryStatus: {
+            type: String,
+            enum: ['in_stock', 'low', 'out'],
+            default: 'in_stock',
         },
-        buyUrl: String,
+        status: {
+            type: String,
+            enum: ['active', 'draft', 'pending', 'completed'], // Including both spec and legacy
+            default: 'active',
+        },
         category: String,
         tags: [String],
         isActive: { type: Boolean, default: true },
-        lastSyncedAt: Date,
-        syncError: String,
-        manualStatus: {
-            type: String,
-            enum: ['pending', 'in_progress', 'completed'],
-            default: 'pending'
-        },
+        metadata: { type: mongoose.Schema.Types.Mixed, default: {} },
         assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     },
     { timestamps: true }
@@ -55,14 +43,12 @@ ProductSchema.index({ organizationId: 1, sku: 1 });
 
 // Update inventory status before save
 ProductSchema.pre('save', function (next) {
-    if (this.inventory.trackInventory) {
-        if (this.inventory.quantity === 0) {
-            this.inventory.status = 'out';
-        } else if (this.inventory.quantity <= this.inventory.lowStockThreshold) {
-            this.inventory.status = 'low';
-        } else {
-            this.inventory.status = 'in_stock';
-        }
+    if (this.inventory === 0) {
+        this.inventoryStatus = 'out';
+    } else if (this.inventory <= 10) { // Default low threshold
+        this.inventoryStatus = 'low';
+    } else {
+        this.inventoryStatus = 'in_stock';
     }
     next();
 });

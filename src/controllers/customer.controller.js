@@ -4,12 +4,12 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 
 export const list = asyncHandler(async (req, res) => {
     const customers = await customerService.listCustomers(req.tenantId, req.query);
-    res.json(new ApiResponse(true, customers));
+    res.json(customers); // Simple list of basic customer objects as per spec
 });
 
 export const getById = asyncHandler(async (req, res) => {
     const customer = await customerService.getCustomerById(req.tenantId, req.params.id);
-    res.json(new ApiResponse(true, customer));
+    res.json(customer); // Full customer object as per spec
 });
 
 export const update = asyncHandler(async (req, res) => {

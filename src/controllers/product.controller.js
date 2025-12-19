@@ -3,8 +3,11 @@ import { ApiResponse } from '../utils/ApiResponse.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 
 export const list = asyncHandler(async (req, res) => {
-    const products = await productService.listProducts(req.tenantId, req.query);
-    res.json(new ApiResponse(true, products));
+    const { data, total } = await productService.listProducts(req.tenantId, req.query);
+    res.json({
+        data,
+        pagination: { total }
+    });
 });
 
 export const create = asyncHandler(async (req, res) => {

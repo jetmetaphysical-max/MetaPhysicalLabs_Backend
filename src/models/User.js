@@ -5,7 +5,7 @@ const UserSchema = new mongoose.Schema(
         email: { type: String, required: true },
         name: { type: String, required: true },
         avatar: String,
-        organizationId: { type: mongoose.Schema.Types.ObjectId, ref: 'Organization', required: true },
+        organizationId: { type: mongoose.Schema.Types.ObjectId, ref: 'Organization' },
         role: {
             type: String,
             enum: ['owner', 'admin', 'editor', 'viewer'],
@@ -34,10 +34,12 @@ const UserSchema = new mongoose.Schema(
             language: String,
         },
     },
-    { timestamps: true }
+    {
+        timestamps: true,
+        collection: 'user' // Better Auth default collection name
+    }
 );
 
-UserSchema.index({ organizationId: 1, email: 1 }, { unique: true });
 UserSchema.index({ email: 1 });
 UserSchema.index({ organizationId: 1, role: 1 });
 

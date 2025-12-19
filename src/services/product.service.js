@@ -2,12 +2,20 @@ import Product from '../models/Product.js';
 import { ApiError } from '../utils/ApiError.js';
 
 export const listProducts = async (tenantId, options = {}) => {
-    const { page = 1, limit = 20 } = options;
+    const { page = 1, limit = 12, search } = options;
     const skip = (page - 1) * limit;
 
-    return Product.find({ organizationId: tenantId })
-        .skip(skip)
-        .limit(limit);
+    const query = { organizationId: tenantId };
+    if (search) {
+        query.name = { $regex: search, $options: 'i' };
+    }
+
+    const [data, total] = await Promise.all([
+        Product.find(query).skip(skip).limit(limit),
+        Product.countDocuments(query)
+    ]);
+
+    return { data, total };
 };
 
 export const createProduct = async (tenantId, data) => {

@@ -5,11 +5,13 @@ export const listOrders = async (tenantId, options = {}) => {
     const { page = 1, limit = 20 } = options;
     const skip = (page - 1) * limit;
 
-    return Order.find({ organizationId: tenantId })
+    const data = await Order.find({ organizationId: tenantId })
         .populate('customerId', 'name email phone')
         .sort({ orderDate: -1 })
         .skip(skip)
         .limit(limit);
+
+    return { data };
 };
 
 export const getOrderById = async (tenantId, orderId) => {

@@ -14,26 +14,28 @@ import webhookRoutes from './webhook.routes.js';
 import subscriptionRoutes from './subscription.routes.js';
 import revenueRoutes from './revenue.routes.js';
 import analyticsRoutes from './analytics.routes.js';
+import uploadRoutes from './upload.routes.js';
 
 const router = Router();
 
 // Auth is handled by Better Auth at /api/auth/*
 // Registration setup endpoint for post-signup organization creation
 router.use('/registration', registrationRoutes);
+router.use('/upload', uploadRoutes); // Mount /v1/upload
 router.use('/organizations', organizationRoutes);
-// router.use('/projects', projectRoutes);
-// router.use('/manuals', manualRoutes);
+router.use('/projects', projectRoutes);
+router.use('/manuals', manualRoutes);
 router.use('/products', productRoutes);
 router.use('/orders', orderRoutes);
 router.use('/customers', customerRoutes);
 router.use('/offers', offerRoutes);
-// router.use('/assets', assetRoutes);
-// router.use('/qr-codes', qrcodeRoutes);
-// router.use('/integrations', integrationRoutes);
-// router.use('/webhooks', webhookRoutes);
-// router.use('/subscriptions', subscriptionRoutes);
+router.use('/assets', assetRoutes);
+router.use('/qr-codes', qrcodeRoutes);
+router.use('/integrations', integrationRoutes);
+router.use('/webhooks', webhookRoutes);
+router.use('/subscriptions', subscriptionRoutes);
 router.use('/revenue', revenueRoutes);
-// router.use('/analytics', analyticsRoutes);
+router.use('/analytics', analyticsRoutes);
 
 export default router;
 
